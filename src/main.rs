@@ -78,7 +78,7 @@ async fn download_latest_krampui(shared_progress: Arc<Mutex<UpdateProgress>>) ->
     }
 
     let mut progress_lock = shared_progress.lock().unwrap();
-    progress_lock.title = "Update completed!".to_string();
+    progress_lock.title = "Update completed! Launching KrampUI in 3 seconds...".to_string();
 
     (true, None)
 }
@@ -97,6 +97,7 @@ async fn main() {
     let clone_for_progress = shared_progress.clone();
 
     tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_secs(1)).await;
         let (success, error_reason) = download_latest_krampui(clone_for_progress).await;
 
         if !success {
